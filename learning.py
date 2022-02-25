@@ -42,10 +42,11 @@ def train(model, device, optimizer, criterion, epochs, train_loader, valid_loade
         # in interpreter
         pbar = tqdm(enumerate(train_loader), file=sys.stdout)
         for batch_idx, (data, target) in pbar:
-            data, target = data.to(device), target.to(device)
+            input_ids, att_mask, tok_type_i = data[0].to(device), data[1].to(device), data[2].to(device)
+            target = target.to(device)
 
             optimizer.zero_grad()
-            output = model(data)
+            output = model(input_ids, att_mask, tok_type_i)
             loss = criterion(output, target)
             acc = calc_acc(output, target)
             loss.backward()
@@ -92,9 +93,10 @@ def evaluate(model, device, criterion, data_loader):
         pbar = tqdm(enumerate(data_loader), file=sys.stdout)
 
         for batch_idx, (data, target) in pbar:
-            data, target = data.to(device), target.to(device),
+            input_ids, att_mask, tok_type_i = data[0].to(device), data[1].to(device), data[2].to(device)
+            target = target.to(device)
 
-            output = model(data)
+            output = model(input_ids, att_mask, tok_type_i)
             loss = criterion(output, target)
             acc = calc_acc(output, target)
 

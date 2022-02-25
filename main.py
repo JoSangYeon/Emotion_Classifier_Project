@@ -13,9 +13,15 @@ from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
 
 from dataset import MyDataset
-from model import MyModel
+from model import get_Model
 from learning import train, evaluate, calc_acc
 from inference import inference
+
+def label2int(data, label_tags):
+    for i in range(len(data)):
+        data.iloc[i,1] = label_tags.index(data.iloc[i, 1])
+    return data
+
 
 def draw_history(history):
     train_loss = history["train_loss"]
@@ -36,18 +42,24 @@ def draw_history(history):
     plt.show()
 
 def main():
-    train_path = ""
-    test_path = ""
+    # label_tags
+    label_tags = ['불안', '슬픔', '상처', '당황', '분노', '기쁨']
 
-    train_data = pd.read_csv(train_path)
-    test_data = pd.read_csv(test_path)
+    train_path = "train.csv"
+    test_path = "test.csv"
+
+    train_data = pd.read_csv(train_path, encoding='cp949')
+    test_data = pd.read_csv(test_path, encoding='cp949')
+
+    train_data = label2int(train_data, label_tags)
+    test_data = label2int(test_data, label_tags)
 
     # your Data Pre-Processing
-    train_x, train_y = train_data.iloc[:, 1:], train_data.iloc[:, :1]
-    test_x, test_y = test_data.iloc[:, 1:], test_data.iloc[:, :1]
+    train_x, train_y = train_data.iloc[:, :1], train_data.iloc[:, 1:]
+    test_x, test_y = test_data.iloc[:, :1], test_data.iloc[:, 1:]
 
     # data split
-    train_x, valid_x, train_y, valid_y = train_test_split(train_x, train_y, stratify=train_y, random_state=17, test_size=0.1)
+    train_x, valid_x, train_y, valid_y = train_test_split(train_x, train_y, stratify=train_y, random_state=17, test_size=0.05)
 
     # Check Train, Valid, Test Image's Shape
     print("The Shape of Train Images: ", train_x.shape)
@@ -68,17 +80,15 @@ def main():
     valid_loader = DataLoader(valid_dataset, batch_size=32)
     test_loader = DataLoader(test_dataset, batch_size=32)
 
-    # label_tags
-    label_tags = ['T-Shirt', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle Boot']
-
-    model = MyModel()
+    model_name = "MyModel_1"
+    model = get_Model(model_name)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     optimizer = torch.optim.AdamW(model.parameters())
     criterion = torch.nn.CrossEntropyLoss()
 
     # train
     print("============================= Train =============================")
-    history = train(model, device, optimizer, criterion, 16, train_loader, valid_loader)
+    history = train(model, device, optimizer, criterion, 10, train_loader, valid_loader)
 
     # Test
     print("============================= Test =============================")
@@ -86,7 +96,7 @@ def main():
     print("test loss : {:.6f}".format(test_loss))
     print("test acc : {:.3f}".format(test_acc))
 
-    file_name = "model1"
+    file_name = model_name
     torch.save(model, f"models/{file_name}.pt")
     with open(f"models/{file_name}_history.pickle", 'wb') as f:
         pickle.dump(history, f, pickle.HIGHEST_PROTOCOL)
@@ -94,9 +104,9 @@ def main():
     # print(history)
     draw_history(history)
 
-    # Inference
-    # print("=========================== Inference ===========================")
-    # inference(device, criterion, infer_dataloader)
+    # # Inference
+    # # print("=========================== Inference ===========================")
+    # # inference(device, criterion, infer_dataloader)
 
 
 if __name__ == '__main__':
