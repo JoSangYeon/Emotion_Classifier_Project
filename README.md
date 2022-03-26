@@ -56,5 +56,10 @@
 
 ## Conclustion
 
+## Issues
++ 2022.03.26
+  + 뭣 때문인지(Dataset 설정으로 예상) 몰라도 정확도와 Loss가 떨어지지 않았음
+  + Dataset을 다시 정의하고, learning.py에서 학습 데이터를 불러오는 방식을 다르게 바꾸니까 해결됨
+
 ## 참고
 https://huggingface.co/docs/transformers/master/en/model_doc/bert#bert
