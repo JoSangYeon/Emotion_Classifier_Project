@@ -11,8 +11,8 @@ from tqdm import tqdm, notebook
 def calc_acc(output, label):
     o_val, o_idx = torch.max(output, dim=-1)
     l_val, l_idx = torch.max(label, dim=-1)
-    return (o_idx == l_idx).sum().item()
-
+    acc = (o_idx == l_idx).sum().item()
+    return acc
 
 def train(model, device, optimizer, criterion, epochs, train_loader, valid_loader=None) -> dict:
     """
@@ -41,8 +41,8 @@ def train(model, device, optimizer, criterion, epochs, train_loader, valid_loade
 
         # in interpreter
         pbar = tqdm(enumerate(train_loader), file=sys.stdout)
-        for batch_idx, (data, target) in pbar:
-            input_ids, att_mask, tok_type_i = data[0].to(device), data[1].to(device), data[2].to(device)
+        for batch_idx, (input_ids, att_mask, tok_type_i, target) in pbar:
+            input_ids, att_mask, tok_type_i = input_ids.to(device), att_mask.to(device), tok_type_i.to(device)
             target = target.to(device)
 
             optimizer.zero_grad()
@@ -55,7 +55,7 @@ def train(model, device, optimizer, criterion, epochs, train_loader, valid_loade
             train_loss += loss.item()
             train_acc += acc
 
-            acc = train_acc / (batch_idx * train_loader.batch_size + len(data))
+            acc = train_acc / (batch_idx * train_loader.batch_size + len(target))
             pbar.set_postfix(epoch=f'{epoch}/{epochs}', loss='{:.6f}, acc={:.3f}'.format(loss, acc))
         pbar.close()
 
@@ -92,8 +92,8 @@ def evaluate(model, device, criterion, data_loader):
         # in interpreter
         pbar = tqdm(enumerate(data_loader), file=sys.stdout)
 
-        for batch_idx, (data, target) in pbar:
-            input_ids, att_mask, tok_type_i = data[0].to(device), data[1].to(device), data[2].to(device)
+        for batch_idx, (input_ids, att_mask, tok_type_i, target) in pbar:
+            input_ids, att_mask, tok_type_i = input_ids.to(device), att_mask.to(device), tok_type_i.to(device)
             target = target.to(device)
 
             output = model(input_ids, att_mask, tok_type_i)
@@ -103,7 +103,7 @@ def evaluate(model, device, criterion, data_loader):
             total_loss += loss.item()
             total_acc += acc
 
-            acc = total_acc / (batch_idx * data_loader.batch_size + len(data))
+            acc = total_acc / (batch_idx * data_loader.batch_size + len(target))
             pbar.set_postfix(loss='{:.6f}, acc={:.3f}'.format(loss, acc))
         pbar.close()
 

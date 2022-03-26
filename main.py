@@ -62,9 +62,9 @@ def main():
     train_x, valid_x, train_y, valid_y = train_test_split(train_x, train_y, stratify=train_y, random_state=17, test_size=0.05)
 
     # Check Train, Valid, Test Image's Shape
-    print("The Shape of Train Images: ", train_x.shape)
-    print("The Shape of Valid Images: ", valid_x.shape)
-    print("The Shape of Test Images: ", test_x.shape)
+    print("The Shape of Train Input: ", train_x.shape)
+    print("The Shape of Valid Input: ", valid_x.shape)
+    print("The Shape of Test Input: ", test_x.shape)
 
     # Check Train, Valid Label's Shape
     print("The Shape of Train Labels: ", train_y.shape)
@@ -83,8 +83,8 @@ def main():
     model_name = "MyModel_1"
     model = get_Model(model_name)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    optimizer = torch.optim.AdamW(model.parameters())
-    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5)
+    criterion = nn.CrossEntropyLoss()
 
     # train
     print("============================= Train =============================")

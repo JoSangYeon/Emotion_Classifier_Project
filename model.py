@@ -4,24 +4,26 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from torchsummary import summary
-from transformers import BertModel
+from transformers import BertModel, AutoModel, AutoTokenizer
 
 class MyModel_1(nn.Module):
-    def __init__(self):
+    def __init__(self, num_classes=6):
         super(MyModel_1, self).__init__()
 
-        self.bert = BertModel.from_pretrained("kykim/bert-kor-base")
+        self.bert = AutoModel.from_pretrained("kykim/bert-kor-base")
+        # self.bert = AutoModel.from_pretrained("klue/bert-base")
+        self.bert.requires_grad = True
 
         self.fc1 = nn.Linear(768, 128)
-        self.fc2 = nn.Linear(128, 6)
+        self.fc2 = nn.Linear(128, num_classes)
 
         self.drop = nn.Dropout(p=0.2)
-        self.act_fn = nn.GELU()
+        self.act_fn = nn.ReLU()
 
     def forward(self, input_ids, attention_mask, token_type_ids):
         bert_output = self.bert(input_ids, attention_mask, token_type_ids)
 
-        total_vector = bert_output.last_hidden_state        # (batch, 128, 768)
+        # total_vector = bert_output.last_hidden_state        # (batch, 128, 768)
         cls_vector = bert_output.pooler_output              # (batch, 768)
 
         x = self.fc1(cls_vector)
