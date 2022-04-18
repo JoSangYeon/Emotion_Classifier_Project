@@ -50,7 +50,7 @@
 + 설명 추가
 
 ### 그 밖에 추가할거
-+ https://github.com/KLUE-benchmark/KLUE
++ https://huggingface.co/klue
 
 ## Result
 
