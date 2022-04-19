@@ -33,6 +33,34 @@ class MyModel_1(nn.Module):
         x = self.fc2(x)
         return x
 
+
+class MyModel_2(nn.Module):
+    def __init__(self, num_classes=6):
+        super(MyModel_2, self).__init__()
+
+        # self.bert = AutoModel.from_pretrained("kykim/bert-kor-base")
+        self.bert = AutoModel.from_pretrained("klue/bert-base")
+        self.bert.requires_grad = True
+
+        self.fc1 = nn.Linear(768, 128)
+        self.fc2 = nn.Linear(128, num_classes)
+
+        self.drop = nn.Dropout(p=0.2)
+        self.act_fn = nn.ReLU()
+
+    def forward(self, input_ids, attention_mask, token_type_ids):
+        bert_output = self.bert(input_ids, attention_mask, token_type_ids)
+
+        # total_vector = bert_output.last_hidden_state        # (batch, 128, 768)
+        cls_vector = bert_output.pooler_output              # (batch, 768)
+
+        x = self.fc1(cls_vector)
+        x = self.act_fn(x)
+        x = self.drop(x)
+
+        x = self.fc2(x)
+        return x
+
 def get_Model(class_name):
     try:
         Myclass = eval(class_name)()

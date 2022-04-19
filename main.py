@@ -12,7 +12,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
 
-from dataset import MyDataset
+from dataset import MyDataset_1, MyDataset_2
 from model import get_Model
 from learning import train, evaluate, calc_acc
 from inference import inference
