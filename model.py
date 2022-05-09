@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
-from torchsummary import summary
 from transformers import AutoModel, AutoTokenizer
 
 class MyModel_1(nn.Module):
@@ -33,23 +32,15 @@ class MyModel_1(nn.Module):
         x = self.fc2(x)
         return x
 
-def get_Model(class_name):
+def get_Model(class_name, model_path):
     try:
-        Myclass = eval(class_name)()
+        Myclass = eval(class_name)(model_path=model_path)
         return Myclass
     except NameError as e:
         print("Class [{}] is not defined".format(class_name))
 
 def main():
     model = get_Model("MyModel_1").cuda()
-
-    input_ids = torch.LongTensor([[31, 51, 99], [15, 5, 0]])
-    attention_mask = torch.LongTensor([[1, 1, 1], [1, 1, 0]])
-    token_type_ids = torch.LongTensor([[0, 0, 1], [0, 1, 0]])
-
-    input_data = {'input_ids': input_ids, 'attention_mask': attention_mask, 'token_type_ids': token_type_ids}
-
-    summary(model, input_size=[(128,), (128,), (128,)], device='cuda')
 
 
 if __name__ == "__main__":

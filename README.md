@@ -6,7 +6,6 @@
 + BERT 계열의 여러모델을 사용해보고 성능비교와 성능향상을 위한 Method 제시
     + Bert, RoBerta, Sentenc-Bert etc,,,
     + attention, Contrastive loss etc,,,
-+ 
 
 ## Data
 ### Train
