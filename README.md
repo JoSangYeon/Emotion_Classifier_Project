@@ -34,24 +34,10 @@
 | .. | ... | ...| 
 
 ## Model
-### BERT based
-+ https://huggingface.co/kykim/bert-kor-base
+### basis BERT
++ https://huggingface.co/klue
 + Model 1 : 
   + Basic KoBERT
-  +
-
-### Ko-ALBERT
-+ https://huggingface.co/kykim/albert-kor-base
-+ 크고 무거운 BERT의 문제점을 보완한 모델
-+ Model ? :
-  + Basic Ko-ALBERT
-  
-### KoElectra
-+ https://huggingface.co/kykim/electra-kor-base
-+ 설명 추가
-
-### 그 밖에 추가할거
-+ https://huggingface.co/klue
 
 ## Result
 
