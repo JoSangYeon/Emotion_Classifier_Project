@@ -3,8 +3,9 @@
 ## Introduction
 + AI HUB에서 제공하는 한국말 대화 뭉치에서 문장에 대한 감정을 분류하는 모델 설계
   + https://aihub.or.kr/aidata/7978
-+ BERT 계열의 여러 파생모델을 사용해보고 성능비교와 성능향상을 위한 Method 제시
-    + KoBERT, KoElectra, RoBERTa,,, etc.
++ BERT 계열의 여러모델을 사용해보고 성능비교와 성능향상을 위한 Method 제시
+    + Bert, RoBerta, Sentenc-Bert etc,,,
+    + attention, Contrastive loss etc,,,
 + 
 
 ## Data
