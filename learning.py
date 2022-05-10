@@ -105,8 +105,8 @@ def evaluate(model, device, criterion, data_loader):
             total_loss += loss.item()
             total_acc += acc
 
-            acc = train_acc / (batch_idx * train_loader.batch_size + len(target))
-            loss = train_loss / (batch_idx * train_loader.batch_size + len(target))
+            acc = total_acc / (batch_idx * data_loader.batch_size + len(target))
+            loss = total_loss / (batch_idx * data_loader.batch_size + len(target))
             pbar.set_postfix(loss='{:.6f}, acc={:.3f}'.format(loss, acc))
         pbar.close()
 
