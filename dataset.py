@@ -13,7 +13,7 @@ def label2int(data, label_tags):
         data.iloc[i,1] = label_tags.index(data.iloc[i, 1])
     return data
 
-class MyDataset_2(Dataset):
+class MyDataset(Dataset):
     def __init__(self, 
                  x_data, 
                  y_data,
@@ -21,7 +21,7 @@ class MyDataset_2(Dataset):
                  max_length=128, 
                  padding='max_length',
                  num_classes=6):
-        super(MyDataset_2, self).__init__()
+        super(MyDataset, self).__init__()
         self.sentence = x_data
         self.sentiment = y_data
         self.num_classes = num_classes
@@ -84,7 +84,7 @@ def main():
     train_x, train_y = train_data.iloc[:, :1], train_data.iloc[:, 1:]
     test_x, test_y = test_data.iloc[:, :1], test_data.iloc[:, 1:]
 
-    train = MyDataset_2(train_x, train_y)
+    train = MyDataset(train_x, train_y)
 
     a, b, c, d = train.__getitem__(10)
     print(a.shape)
