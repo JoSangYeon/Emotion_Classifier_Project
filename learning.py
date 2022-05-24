@@ -41,12 +41,12 @@ def train(model, device, optimizer, criterion, epochs, train_loader, valid_loade
 
         # in interpreter
         pbar = tqdm(enumerate(train_loader), file=sys.stdout)
-        for batch_idx, (input_ids, att_mask, tok_type_i, target) in pbar:
-            input_ids, att_mask, tok_type_i = input_ids.to(device), att_mask.to(device), tok_type_i.to(device)
+        for batch_idx, (input_ids, att_mask, target) in pbar:
+            input_ids, att_mask = input_ids.to(device), att_mask.to(device)
             target = target.to(device)
 
             optimizer.zero_grad()
-            output = model(input_ids, att_mask, tok_type_i)
+            output = model(input_ids, att_mask)
             loss = criterion(output, target)
             acc = calc_acc(output, target)
             loss.backward()
@@ -94,11 +94,11 @@ def evaluate(model, device, criterion, data_loader):
         # in interpreter
         pbar = tqdm(enumerate(data_loader), file=sys.stdout)
 
-        for batch_idx, (input_ids, att_mask, tok_type_i, target) in pbar:
-            input_ids, att_mask, tok_type_i = input_ids.to(device), att_mask.to(device), tok_type_i.to(device)
+        for batch_idx, (input_ids, att_mask, target) in pbar:
+            input_ids, att_mask = input_ids.to(device), att_mask.to(device)
             target = target.to(device)
 
-            output = model(input_ids, att_mask, tok_type_i)
+            output = model(input_ids, att_mask)
             loss = criterion(output, target)
             acc = calc_acc(output, target)
 
