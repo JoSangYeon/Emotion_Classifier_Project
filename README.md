@@ -65,9 +65,9 @@ Class_tag = ['불안', '슬픔', '기쁨']
 ### Training History
 학습 그래프
 #### BERT
-![Model 1_6(BERT) Train History](https://user-images.githubusercontent.com/28241676/170704160-ace9d236-05dc-4d97-a52a-dc393fb9f4c0.png)
+![Model 1_6(BERT) Train History](https://user-images.githubusercontent.com/28241676/170709315-7450abbf-bab7-4e00-a537-2827b6da3b19.png)
 #### RoBERTa
-![Model 1_6(RoBERTa) Train History](https://user-images.githubusercontent.com/28241676/170704167-62b0618c-4f94-429e-ba54-7d3b31d243db.png)
+![Model 1_6(RoBERTa) Train History](https://user-images.githubusercontent.com/28241676/170709318-494e1348-1125-4720-9344-cd22d8003a1b.png)
 
 ### Performance Table(Test)
 ![Performance Table](https://user-images.githubusercontent.com/28241676/170706907-a08b6b9b-9203-4be6-a109-90887db9b088.png)
