@@ -46,7 +46,7 @@ def train(model, device, optimizer, criterion, epochs, train_loader, valid_loade
             target = target.to(device)
 
             optimizer.zero_grad()
-            output = model(input_ids, att_mask)
+            output, _ = model(input_ids, att_mask)
             loss = criterion(output, target)
             acc = calc_acc(output, target)
             loss.backward()
@@ -98,7 +98,7 @@ def evaluate(model, device, criterion, data_loader):
             input_ids, att_mask = input_ids.to(device), att_mask.to(device)
             target = target.to(device)
 
-            output = model(input_ids, att_mask)
+            output, _ = model(input_ids, att_mask)
             loss = criterion(output, target)
             acc = calc_acc(output, target)
 

@@ -80,7 +80,7 @@ class MyDataset_Contrastive(Dataset):
         self.sentence = x_data
         self.sentiment = y_data
         self.num_classes = num_classes
-        self.index = self.sentence.index.values
+        self.index = np.array(range(len(self.sentence))) # [0, 1, ,,, , n-1, n]
 
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
 
@@ -114,9 +114,7 @@ class MyDataset_Contrastive(Dataset):
         
         
         ## Contrastive Data ##
-        contra_idx = np.random.choice(len(self.sentence))
-        while idx == contra_idx:
-            contra_idx = np.random.choice(len(self.sentence))
+        contra_idx = np.random.choice(self.index[self.index != idx])
         ### Contrastive Sentence ###
         c = self.sentence.iloc[contra_idx][0]
         tokenizer_output = self.tokenizer(c, max_length=self.max_length, padding=self.padding,
@@ -217,7 +215,7 @@ class MyDataset_Triplet(Dataset):
 
 def main():
     # label_tags
-    label_tags = ['불안', '슬픔', '상처', '당황', '분노', '기쁨']
+    label_tags = ['불안', '슬픔', '기쁨']
 
     train_path = "train.csv"
     test_path = "test.csv"
