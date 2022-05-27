@@ -62,12 +62,49 @@ Class_tag = ['불안', '슬픔', '기쁨']
 
 ## Result
 
+### Training History
+학습 그래프
+#### BERT
+![Model 1_6(BERT) Train History](https://user-images.githubusercontent.com/28241676/170704160-ace9d236-05dc-4d97-a52a-dc393fb9f4c0.png)
+#### RoBERTa
+![Model 1_6(RoBERTa) Train History](https://user-images.githubusercontent.com/28241676/170704167-62b0618c-4f94-429e-ba54-7d3b31d243db.png)
+
+### Performance Table(Test)
+![Performance Table](https://user-images.githubusercontent.com/28241676/170706907-a08b6b9b-9203-4be6-a109-90887db9b088.png)
+
+### Embedding Clustering
++ 과연, Metric Learning 방법론은 강력할까?
++ (T-SNE를 통해 256 -> 2로 차원축소함)
+  
+![Model's Embedding Clustering](https://user-images.githubusercontent.com/28241676/170704149-e5661acb-e9da-45ff-b202-e7a367758ade.png)
+
 ## Conclusion
+Contrsative와 Triplet의 규제 비율을 조금 더 높게(학습 시 0.1로 설정함) 설정했다면 어떻게 됬을 지 궁금함
+
+
+### Training
++ 전체적으로 Loss는 오르는 방향
++ Training 데이터에 대해서는 Acc가 상승
++ Valid, Test 데이터에 대해서는 Acc 상승 X
+    + 학습 데이터가 조금 더 많았으면 하는 아쉬움이 남음
+
+### Performance
++ 위 그림에서 확인
++ 전체적으로 BERT의 성능이 더 좋다. RoBERTa의 성능이 조금 아쉽다.
+    + 어째서 이론적으로 더 개선된 RoBERTa가 성능이 안좋은지는 의문 
+
+### Clustering
++ Pooling Strategy는 Mean Pooling보다 CLS Token이 더 좋음(정확도 면에서)
++ Contrastive, Triplet Loss의 성능을 확인
+    + Clustering 부분에서는 확실히 성능향상이 시각적으로 확인됨
+    + Loss, Acc는 CLS Token은 성능 차이가 보임
+    + 그러나 Mean Pooling에서는 크게 들어나지 않음
++ 기쁨의 감정은 거의 정확하게 분리된 공간에 위치하도록 학습됨
++ 슬픔과 불안의 감정을 헷갈려 하는 경향이 있음
++ BERT(CLS)의 Contrastive Loss(Model_3_BERT)는 거의 3개의 공간으로 분리해 낸것을 확인할 수 있음
++ RoBERTa(Mean)의 Triplet Loss(Model_6_RoBerta)는 거의 3개의 공간으로 분리해 낸것을 확인할 수 있음
 
 ## Issues
 + 2022.03.26
   + 뭣 때문인지(Dataset 설정으로 예상) 몰라도 정확도와 Loss가 떨어지지 않았음
   + Dataset을 다시 정의하고, learning.py에서 학습 데이터를 불러오는 방식을 다르게 바꾸니까 해결됨
-
-## 참고
-https://huggingface.co/docs/transformers/master/en/model_doc/bert#bert
